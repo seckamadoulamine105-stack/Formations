@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<script>(function(){function ser(a){try{return Array.prototype.slice.call(a).map(function(x){if(typeof x==="object"&&x!==null){try{return JSON.stringify(x,null,2);}catch(e){return String(x);}}return String(x);}).join(" ");}catch(e){return "";}}function send(t,m){try{window.parent.postMessage({__htmlPreviewerConsole:true,type:t,message:m,timestamp:new Date().toLocaleTimeString()},"*");}catch(e){}}var c=window.console||{};["log","info","warn","error"].forEach(function(k){var orig=c[k];c[k]=function(){send(k==="log"?"log":k,ser(arguments));if(orig){try{orig.apply(c,arguments);}catch(e){}}};});window.console=c;window.onerror=function(message,source,lineno,colno,error){send("error","Error at line "+lineno+": "+message);return false;};window.onunhandledrejection=function(event){send("error","Unhandled Promise Rejection: "+(event&&event.reason));};})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevAcademy - Formation Complete HTML5, CSS3 & JavaScript</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        html: '#e34f26',
+                        css: '#1572b6',
+                        js: '#f7df1e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Monaco', 'Consolas', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glass-header {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans flex flex-col md:flex-row overflow-x-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-full md:w-80 bg-slate-900 border-r border-slate-800 flex flex-col h-auto md:h-screen sticky top-0 z-40 transition-all duration-300">
+        <!-- Logo & Title -->
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-sky-500/20">
+                    &lt;/&gt;
+                </div>
+                <div>
+                    <h1 class="font-bold text-base text-slate-100 tracking-wide">DevAcademy</h1>
+                    <p class="text-xs text-sky-400 font-medium">HTML • CSS • JavaScript</p>
+                </div>
+            </div>
+            <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-bars text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+
+        <!-- Global Progress Bar -->
+        <div class="p-4 border-b border-slate-800/80 bg-slate-950/40">
+            <div class="flex items-center justify-between text-xs mb-1.5 font-semibold">
+                <span class="text-slate-400">Progression globale</span>
+                <span class="text-sky-400" id="global-progress-percent">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div id="global-progress-bar" class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full w-0 transition-all duration-500"></div>
+            </div>
+        </div>
+
+        <!-- Course Navigation Items -->
+        <div id="sidebar-content" class="flex-1 overflow-y-auto p-3 space-y-4 hidden md:block">
+            
+            <!-- Quick Tools Tabs -->
+            <div class="grid grid-cols-2 gap-2 mb-2">
+                <button onclick="switchView('playground')" id="nav-btn-playground" class="px-3 py-2 rounded-lg text-xs font-semibold bg-sky-600 text-white flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-code"></i> Playground
+                </button>
+                <button onclick="switchView('cheatsheets')" id="nav-btn-cheatsheets" class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-book-open"></i> Mémos
+                </button>
+            </div>
+
+            <div class="text-[11px] font-bold tracking-wider text-slate-500 uppercase px-2">Modules de cours</div>
+
+            <!-- Modules List dynamically filled or rendered -->
+            <div id="modules-list" class="space-y-3">
+                <!-- Javascript will inject accordion links here -->
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col min-w-0 h-auto md:h-screen overflow-y-auto bg-slate-950">
+
+        <!-- Top Header Controls -->
+        <header class="sticky top-0 z-30 glass-header px-6 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span id="current-badge" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-html/20 text-html border border-html/30">
+                    HTML5
+                </span>
+                <h2 id="current-title" class="font-semibold text-slate-200 text-sm md:text-base truncate">
+                    Chargement du cours...
+                </h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="markCurrentLessonComplete()" id="complete-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white text-xs font-medium border border-slate-700 transition-all flex items-center gap-2">
+                    <i class="fa-regular fa-circle-check"></i>
+                    <span>Marquer terminé</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- VIEW 1: LESSON / COURSE CONTENT -->
+        <section id="view-lesson" class="p-4 md:p-8 max-w-4xl mx-auto w-full space-y-6">
+            <!-- Dynamic Content Area -->
+            <div id="lesson-container" class="space-y-6">
+                <!-- Course rendered dynamically -->
+            </div>
+
+            <!-- Quiz Section attached to lesson -->
+            <div id="quiz-container" class="mt-10 p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                <!-- Quiz dynamically injected -->
+            </div>
+        </section>
+
+        <!-- VIEW 2: CODE PLAYGROUND -->
+        <section id="view-playground" class="hidden flex-1 flex-col h-full p-4 space-y-4">
+            <div class="flex items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-laptop-code text-sky-400"></i>
+                    <h3 class="font-bold text-sm text-slate-200">Éditeur de code en direct (Playground)</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="runPlaygroundCode()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-md shadow-emerald-900/30">
+                        <i class="fa-solid fa-play"></i> Exécuter
+                    </button>
+                    <button onclick="resetPlaygroundCode()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-all">
+                        Réinitialiser
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Editors Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-[350px]">
+                <!-- HTML Editor -->
+                <div class="flex flex-col bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                    <div class="bg-slate-950 px-3 py-2 text-xs font-bold text-html flex items-center justify-between border-b border-slate-800">
+                        <span><i class="fa-brands fa-html5 mr-1.5"></i> HTML</span>
+                    </div>
+                    <textarea id="code-html" class="flex-1 w-full p-3 bg-slate-900 text-slate-200 code-font text-xs focus:outline-none resize-none" placeholder="<!-- Votre HTML ici -->"></textarea>
+                </div>
+
+                <!-- CSS Editor -->
+                <div class="flex flex-col bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                    <div class="bg-slate-950 px-3 py-2 text-xs font-bold text-css flex items-center justify-between border-b border-slate-800">
+                        <span><i class="fa-brands fa-css3-alt mr-1.5"></i> CSS</span>
+                    </div>
+                    <textarea id="code-css" class="flex-1 w-full p-3 bg-slate-900 text-slate-200 code-font text-xs focus:outline-none resize-none" placeholder="/* Votre CSS ici */"></textarea>
+                </div>
+
+                <!-- JS Editor -->
+                <div class="flex flex-col bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+                    <div class="bg-slate-950 px-3 py-2 text-xs font-bold text-js flex items-center justify-between border-b border-slate-800">
+                        <span><i class="fa-brands fa-js mr-1.5"></i> JavaScript</span>
+                    </div>
+                    <textarea id="code-js" class="flex-1 w-full p-3 bg-slate-900 text-slate-200 code-font text-xs focus:outline-none resize-none" placeholder="// Votre JS ici"></textarea>
+                </div>
+            </div>
+
+            <!-- Live Output Preview -->
+            <div class="h-64 bg-white rounded-xl overflow-hidden border border-slate-800 flex flex-col shadow-inner">
+                <div class="bg-slate-800 text-slate-300 px-3 py-1.5 text-xs font-semibold flex items-center justify-between border-b border-slate-700">
+                    <span><i class="fa-solid fa-desktop mr-2 text-slate-400"></i> Rendu en direct (Aperçu)</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Exécution sandbox sécurisée</span>
+                </div>
+                <iframe id="playground-preview" class="w-full flex-1 bg-white border-0"></iframe>
+            </div>
+        </section>
+
+        <!-- VIEW 3: CHEATSHEETS -->
+        <section id="view-cheatsheets" class="hidden p-6 max-w-5xl mx-auto w-full space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                    <i class="fa-solid fa-book-open text-sky-400"></i> Fiches Mémo & Syntax Cheatsheets
+                </h2>
+                <p class="text-slate-400 text-sm">Accès rapide aux balises HTML, propriétés CSS et concepts JS incontournables.</p>
+            </div>
+
+            <!-- Tabs Technology -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- HTML Memo -->
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="text-lg font-bold text-html flex items-center gap-2">
+                        <i class="fa-brands fa-html5"></i> HTML5 Essentiel
+                    </h3>
+                    <ul class="text-xs text-slate-300 space-y-2 code-font">
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">&lt;section&gt;, &lt;article&gt;, &lt;aside&gt;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">&lt;form action="" method="POST"&gt;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">&lt;input type="text|email|number"&gt;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">&lt;img src="" alt="" loading="lazy"&gt;</li>
+                    </ul>
+                </div>
+
+                <!-- CSS Memo -->
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="text-lg font-bold text-css flex items-center gap-2">
+                        <i class="fa-brands fa-css3-alt"></i> CSS3 Essentiel
+                    </h3>
+                    <ul class="text-xs text-slate-300 space-y-2 code-font">
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">display: flex; justify-content: center;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">display: grid; grid-template-columns: 1fr 1fr;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">@media (max-width: 768px) { ... }</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">transition: all 0.3s ease;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);</li>
+                    </ul>
+                </div>
+
+                <!-- JS Memo -->
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="text-lg font-bold text-js flex items-center gap-2">
+                        <i class="fa-brands fa-js"></i> JavaScript ES6+
+                    </h3>
+                    <ul class="text-xs text-slate-300 space-y-2 code-font">
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">const sum = (a, b) =&gt; a + b;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">document.querySelector('.btn').addEventListener</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">const [first, ...rest] = array;</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">async function getData() { await fetch() }</li>
+                        <li class="bg-slate-950 p-2 rounded border border-slate-800">localStorage.setItem('key', JSON.stringify())</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // DATA STRUCTURE FOR THE 3 MODULES
+        const COURSE_DATA = [
+            {
+                id: 'module-html',
+                title: 'Module 1 : HTML5',
+                badge: 'HTML5',
+                badgeColor: 'html',
+                lessons: [
+                    {
+                        id: 'html-1',
+                        title: '1. Structure de base d\'un document HTML',
+                        content: `
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-slate-100">Anatomie d'une page Web moderne</h3>
+                                <p class="text-slate-300 leading-relaxed text-sm">
+                                    HTML (HyperText Markup Language) est le langage standard qui structure tout le contenu du Web. Un document HTML5 respecte une structure élémentaire essentielle.
+                                </p>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 code-font text-xs text-emerald-400">
+                                    &lt;!DOCTYPE html&gt;<br>
+                                    &lt;html lang="fr"&gt;<br>
+                                    &nbsp;&nbsp;&lt;head&gt;<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="UTF-8"&gt;<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Ma première page&lt;/title&gt;<br>
+                                    &nbsp;&nbsp;&lt;/head&gt;<br>
+                                    &nbsp;&nbsp;&lt;body&gt;<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Bonjour le monde !&lt;/h1&gt;<br>
+                                    &nbsp;&nbsp;&lt;/body&gt;<br>
+                                    &lt;/html&gt;
+                                </div>
+                                <div class="bg-sky-950/50 border-l-4 border-sky-500 p-4 rounded-r-xl text-xs text-sky-200">
+                                    <strong>💡 À retenir :</strong> Le <code>&lt;head&gt;</code> contient les métadonnées (non visibles par l'utilisateur), tandis que le <code>&lt;body&gt;</code> contient tout ce qui est affiché à l'écran.
+                                </div>
+                            </div>
+                        `,
+                        initialCode: {
+                            html: `<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Mon premier titre</h1>\n    <p>Bienvenue sur mon site web !</p>\n  </body>\n</html>`,
+                            css: `body { font-family: sans-serif; color: #0284c7; padding: 20px; }`,
+                            js: `console.log("Page chargée !");`
+                        },
+                        quiz: {
+                            question: "Quelle balise enveloppe tout le contenu visible par l'utilisateur sur une page web ?",
+                            options: ["<head>", "<body>", "<meta>", "<header>"],
+                            answer: 1
+                        }
+                    },
+                    {
+                        id: 'html-2',
+                        title: '2. Les balises sémantiques HTML5',
+                        content: `
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-slate-100">Pourquoi la sémantique est cruciale ?</h3>
+                                <p class="text-slate-300 leading-relaxed text-sm">
+                                    La sémantique consiste à donner du sens à vos balises pour optimiser l'accessibilité et le référencement (SEO).
+                                </p>
+                                <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                    <li class="bg-slate-900 p-3 rounded-lg border border-slate-800"><b class="text-html">&lt;header&gt;</b> : En-tête principal du site ou d'une section.</li>
+                                    <li class="bg-slate-900 p-3 rounded-lg border border-slate-800"><b class="text-html">&lt;nav&gt;</b> : Menu de navigation principal.</li>
+                                    <li class="bg-slate-900 p-3 rounded-lg border border-slate-800"><b class="text-html">&lt;main&gt;</b> : Contenu principal unique de la page.</li>
+                                    <li class="bg-slate-900 p-3 rounded-lg border border-slate-800"><b class="text-html">&lt;footer&gt;</b> : Pied de page (droits, liens).</li>
+                                </ul>
+                            </div>
+                        `,
+                        initialCode: {
+                            html: `<header>\n  <h2>Mon Blog</h2>\n</header>\n<main>\n  <article>\n    <h3>Article 1</h3>\n    <p>Contenu de l'article...</p>\n  </article>\n</main>`,
+                            css: `header { background: #334155; color: white; padding: 10px; }\nmain { padding: 15px; }`,
+                            js: ``
+                        },
+                        quiz: {
+                            question: "Quelle balise est dédiée au menu principal de navigation ?",
+                            options: ["<menu>", "<nav>", "<links>", "<header>"],
+                            answer: 1
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'module-css',
+                title: 'Module 2 : CSS3',
+                badge: 'CSS3',
+                badgeColor: 'css',
+                lessons: [
+                    {
+                        id: 'css-1',
+                        title: '1. Les Sélecteurs & le Modèle de Boîte (Box Model)',
+                        content: `
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-slate-100">Le Modèle de Boîte (Box Model)</h3>
+                                <p class="text-slate-300 leading-relaxed text-sm">
+                                    En CSS, chaque élément est considéré comme une boîte composée de : <b>Content</b>, <b>Padding</b> (marge interne), <b>Border</b> (bordure), et <b>Margin</b> (marge externe).
+                                </p>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 code-font text-xs text-sky-400">
+                                    .carte {<br>
+                                    &nbsp;&nbsp;width: 300px;<br>
+                                    &nbsp;&nbsp;padding: 20px; /* Espace interne */<br>
+                                    &nbsp;&nbsp;border: 2px solid #0284c7;<br>
+                                    &nbsp;&nbsp;margin: 15px; /* Espace externe */<br>
+                                    }
+                                </div>
+                            </div>
+                        `,
+                        initialCode: {
+                            html: `<div class="box">Modèle de boîte</div>`,
+                            css: `.box {\n  width: 200px;\n  padding: 20px;\n  border: 4px solid #38bdf8;\n  margin: 30px;\n  background: #0f172a;\n  color: white;\n  text-align: center;\n}`,
+                            js: ``
+                        },
+                        quiz: {
+                            question: "Quelle propriété CSS définit l'espace interne d'un élément ?",
+                            options: ["margin", "padding", "border", "spacing"],
+                            answer: 1
+                        }
+                    },
+                    {
+                        id: 'css-2',
+                        title: '2. CSS Flexbox : Créer des layouts modernes',
+                        content: `
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-slate-100">Maîtriser Flexbox en 1 minute</h3>
+                                <p class="text-slate-300 leading-relaxed text-sm">
+                                    Flexbox permet d'aligner facilement des éléments horizontalement ou verticalement.
+                                </p>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 code-font text-xs text-sky-400">
+                                    .container {<br>
+                                    &nbsp;&nbsp;display: flex;<br>
+                                    &nbsp;&nbsp;justify-content: space-between; /* Alignement horizontal */<br>
+                                    &nbsp;&nbsp;align-items: center; /* Alignement vertical */<br>
+                                    }
+                                </div>
+                            </div>
+                        `,
+                        initialCode: {
+                            html: `<div class="flex-container">\n  <div class="item">1</div>\n  <div class="item">2</div>\n  <div class="item">3</div>\n</div>`,
+                            css: `.flex-container {\n  display: flex;\n  justify-content: space-around;\n  background: #1e293b;\n  padding: 15px;\n}\n.item {\n  background: #38bdf8;\n  padding: 15px 25px;\n  color: black;\n  font-weight: bold;\n  border-radius: 8px;\n}`,
+                            js: ``
+                        },
+                        quiz: {
+                            question: "Quelle propriété permet d'aligner les éléments le long de l'axe principal dans Flexbox ?",
+                            options: ["align-items", "justify-content", "flex-direction", "center-content"],
+                            answer: 1
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'module-js',
+                title: 'Module 3 : JavaScript (ES6+)',
+                badge: 'JavaScript',
+                badgeColor: 'js',
+                lessons: [
+                    {
+                        id: 'js-1',
+                        title: '1. Variables, Fonctions et Manipulations du DOM',
+                        content: `
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-slate-100">Rendre votre site dynamique avec JavaScript</h3>
+                                <p class="text-slate-300 leading-relaxed text-sm">
+                                    JavaScript permet d'interagir avec le DOM (Document Object Model) pour modifier les éléments HTML à la volée.
+                                </p>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 code-font text-xs text-amber-300">
+                                    // Sélection et événement<br>
+                                    const bouton = document.querySelector('#monBouton');<br>
+                                    bouton.addEventListener('click', () => {<br>
+                                    &nbsp;&nbsp;document.body.style.backgroundColor = 'teal';<br>
+                                    });
+                                </div>
+                            </div>
+                        `,
+                        initialCode: {
+                            html: `<h1 id="titre">Texte original</h1>\n<button id="btn">Changer le texte</button>`,
+                            css: `button {\n  padding: 10px 20px;\n  background: #f59e0b;\n  border: none;\n  border-radius: 6px;\n  cursor: pointer;\n  font-weight: bold;\n}`,
+                            js: `document.getElementById('btn').addEventListener('click', () => {\n  document.getElementById('titre').innerText = "Bravo, le JS fonctionne ! 🎉";\n});`
+                        },
+                        quiz: {
+                            question: "Quelle méthode permet de sélectionner un élément HTML par son identifiant en JS ?",
+                            options: ["document.getElement()", "document.getElementById()", "document.queryIdentifier()", "document.findId()"],
+                            answer: 1
+                        }
+                    }
+                ]
+            }
+        ];
+
+        let completedLessons = JSON.parse(localStorage.getItem('devacademy_completed') || '[]');
+        let currentLessonId = 'html-1';
+
+        // ON LOAD INITIALIZATION
+        window.onload = function() {
+            renderSidebar();
+            loadLesson(currentLessonId);
+            updateGlobalProgress();
+        };
+
+        // RENDER SIDEBAR ACCORDION
+        function renderSidebar() {
+            const container = document.getElementById('modules-list');
+            container.innerHTML = '';
+
+            COURSE_DATA.forEach(module => {
+                const modEl = document.createElement('div');
+                modEl.className = "space-y-1";
+
+                let lessonsHtml = module.lessons.map(lesson => {
+                    const isCompleted = completedLessons.includes(lesson.id);
+                    return `
+                        <button onclick="loadLesson('${lesson.id}')" id="btn-lesson-${lesson.id}" 
+                                class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-between group hover:bg-slate-800 text-slate-400">
+                            <span class="truncate flex items-center gap-2">
+                                <i class="fa-regular ${isCompleted ? 'fa-circle-check text-emerald-400' : 'fa-circle text-slate-600'}"></i>
+                                <span class="group-hover:text-slate-200 transition-colors">${lesson.title}</span>
+                            </span>
+                        </button>
+                    `;
+                }).join('');
+
+                modEl.innerHTML = `
+                    <div class="px-2 py-1.5 text-xs font-bold text-slate-300 flex items-center justify-between">
+                        <span>${module.title}</span>
+                    </div>
+                    <div class="pl-2 space-y-0.5 border-l border-slate-800 ml-2">
+                        ${lessonsHtml}
+                    </div>
+                `;
+                container.appendChild(modEl);
+            });
+        }
+
+        function loadLesson(lessonId) {
+            currentLessonId = lessonId;
+            switchView('lesson');
+
+            let foundLesson = null;
+            let foundModule = null;
+
+            COURSE_DATA.forEach(mod => {
+                const l = mod.lessons.find(item => item.id === lessonId);
+                if (l) {
+                    foundLesson = l;
+                    foundModule = mod;
+                }
+            });
+
+            if (!foundLesson) return;
+
+            // Update Header
+            document.getElementById('current-title').innerText = foundLesson.title;
+            const badge = document.getElementById('current-badge');
+            badge.innerText = foundModule.badge;
+            badge.className = `px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-${foundModule.badgeColor}/20 text-${foundModule.badgeColor} border border-${foundModule.badgeColor}/30`;
+
+            // Update Complete Button state
+            updateCompleteButtonState();
+
+            // Render Lesson Content
+            const lessonContainer = document.getElementById('lesson-container');
+            lessonContainer.innerHTML = `
+                ${foundLesson.content}
+                
+                <!-- Quick Practice Sandbox Button -->
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-200">Pratiquer ce chapitre</h4>
+                        <p class="text-xs text-slate-400">Ouvrez le code de ce cours directement dans l'éditeur interactif.</p>
+                    </div>
+                    <button onclick="openInPlayground()" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-terminal"></i> Tester dans l'éditeur
+                    </button>
+                </div>
+            `;
+
+            // Render Quiz
+            renderQuiz(foundLesson.quiz);
+
+            // Pre-fill playground code
+            if (foundLesson.initialCode) {
+                document.getElementById('code-html').value = foundLesson.initialCode.html || '';
+                document.getElementById('code-css').value = foundLesson.initialCode.css || '';
+                document.getElementById('code-js').value = foundLesson.initialCode.js || '';
+            }
+
+            // Highlight Active Link in Sidebar
+            document.querySelectorAll('[id^="btn-lesson-"]').forEach(btn => {
+                btn.classList.remove('bg-sky-950/60', 'text-sky-400', 'font-semibold');
+            });
+            const activeBtn = document.getElementById(`btn-lesson-${lessonId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-sky-950/60', 'text-sky-400', 'font-semibold');
+            }
+        }
+
+        // RENDER QUIZ SECTION
+        function renderQuiz(quizData) {
+            const quizContainer = document.getElementById('quiz-container');
+            if (!quizData) {
+                quizContainer.classList.add('hidden');
+                return;
+            }
+
+            quizContainer.classList.remove('hidden');
+            let optionsHtml = quizData.options.map((opt, idx) => `
+                <button onclick="checkQuizAnswer(${idx}, ${quizData.answer})" class="quiz-option-btn w-full text-left p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-sky-500 text-xs font-medium text-slate-300 transition-all flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-400">${String.fromCharCode(65 + idx)}</span>
+                    <span>${opt}</span>
+                </button>
+            `).join('');
+
+            quizContainer.innerHTML = `
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                    <i class="fa-solid fa-circle-question"></i> Quiz de validation
+                </div>
+                <p class="text-xs md:text-sm font-semibold text-slate-200">${quizData.question}</p>
+                <div class="space-y-2 mt-2" id="quiz-options">
+                    ${optionsHtml}
+                </div>
+                <div id="quiz-feedback" class="hidden p-3 rounded-xl text-xs font-bold mt-2"></div>
+            `;
+        }
+
+        function checkQuizAnswer(selectedIdx, correctIdx) {
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selectedIdx === correctIdx) {
+                feedback.className = "p-3 rounded-xl text-xs font-bold mt-2 bg-emerald-950/80 border border-emerald-500/50 text-emerald-300";
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i> Excellente réponse ! Vous avez assimilé le concept.';
+                markCurrentLessonComplete();
+            } else {
+                feedback.className = "p-3 rounded-xl text-xs font-bold mt-2 bg-rose-950/80 border border-rose-500/50 text-rose-300";
+                feedback.innerHTML = '<i class="fa-solid fa-circle-xmark mr-2"></i> Réponse incorrecte. Relisez attentivement le cours ci-dessus.';
+            }
+        }
+
+        function runPlaygroundCode() {
+            const html = document.getElementById('code-html').value;
+            const css = document.getElementById('code-css').value;
+            const js = document.getElementById('code-js').value;
+
+            const previewFrame = document.getElementById('playground-preview');
+            const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+
+            const combinedCode = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>${css}</style>
+                </head>
+                <body>
+                    ${html}
+                    <script>${js}<\/script>
+                </body>
+                </html>
+            `;
+
+            previewDoc.open();
+            previewDoc.write(combinedCode);
+            previewDoc.close();
+        }
+
+        function openInPlayground() {
+            switchView('playground');
+            runPlaygroundCode();
+        }
+
+        function resetPlaygroundCode() {
+            loadLesson(currentLessonId);
+            runPlaygroundCode();
+        }
+
+        // MARKS LESSON COMPLETED
+        function markCurrentLessonComplete() {
+            if (!completedLessons.includes(currentLessonId)) {
+                completedLessons.push(currentLessonId);
+                localStorage.setItem('devacademy_completed', JSON.stringify(completedLessons));
+                renderSidebar();
+                updateGlobalProgress();
+                updateCompleteButtonState();
+            }
+        }
+
+        function updateCompleteButtonState() {
+            const btn = document.getElementById('complete-btn');
+            const isCompleted = completedLessons.includes(currentLessonId);
+
+            if (isCompleted) {
+                btn.className = "px-3 py-1.5 rounded-lg bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold flex items-center gap-2";
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> <span>Terminé</span>';
+            } else {
+                btn.className = "px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white text-xs font-medium border border-slate-700 transition-all flex items-center gap-2";
+                btn.innerHTML = '<i class="fa-regular fa-circle-check"></i> <span>Marquer terminé</span>';
+            }
+        }
+
+        function updateGlobalProgress() {
+            let totalLessons = 0;
+            COURSE_DATA.forEach(mod => totalLessons += mod.lessons.length);
+
+            const percent = Math.round((completedLessons.length / totalLessons) * 100) || 0;
+            document.getElementById('global-progress-percent').innerText = `${percent}%`;
+            document.getElementById('global-progress-bar').style.width = `${percent}%`;
+        }
+
+        // SWITCH VIEWS CONTROLLER
+        function switchView(viewName) {
+            ['lesson', 'playground', 'cheatsheets'].forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (v === viewName) {
+                    el.classList.remove('hidden');
+                    if (v === 'playground') el.classList.add('flex');
+                } else {
+                    el.classList.add('hidden');
+                    if (v === 'playground') el.classList.remove('flex');
+                }
+            });
+
+            // Toggle Header nav button styles
+            const playBtn = document.getElementById('nav-btn-playground');
+            const cheatBtn = document.getElementById('nav-btn-cheatsheets');
+
+            playBtn.className = viewName === 'playground' ? 
+                'px-3 py-2 rounded-lg text-xs font-semibold bg-sky-600 text-white flex items-center justify-center gap-2 transition-all' : 
+                'px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center gap-2 transition-all';
+
+            cheatBtn.className = viewName === 'cheatsheets' ? 
+                'px-3 py-2 rounded-lg text-xs font-semibold bg-sky-600 text-white flex items-center justify-center gap-2 transition-all' : 
+                'px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center gap-2 transition-all';
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar-content');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
